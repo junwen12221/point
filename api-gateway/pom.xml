@@ -22,7 +22,10 @@
       <artifactId>microservice-lightfish-common</artifactId>
       <version>${project.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-redis-client</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

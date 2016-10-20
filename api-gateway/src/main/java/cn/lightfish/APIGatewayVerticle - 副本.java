@@ -1,3 +1,4 @@
+/*
 package cn.lightfish;
 
 import cn.lightfish.common.RestAPIVerticle;
@@ -23,7 +24,9 @@ import io.vertx.redis.RedisOptions;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.types.HttpEndpoint;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -50,7 +53,8 @@ public class APIGatewayVerticle extends RestAPIVerticle {
                         .put("type", "jceks")
                         .put("path", "D:\\lightfish-point\\api-gateway\\src\\main\\java\\cn\\lightfish\\keystore.jceks")
                         .put("password", "secret")));
-        router.route("/api/cmd/*").handler(JWTAuthHandler.create(jwt, "/api/newToken"));
+        router.route("/api/cmd*/
+/*").handler(JWTAuthHandler.create(jwt, "/api/newToken"));
         router.post("/api/newToken").handler(ctx -> {
             ctx.response().putHeader("Content-Type", "text/plain");
             client.get(ctx.request().getParam("username"), (r) -> {
@@ -62,7 +66,7 @@ public class APIGatewayVerticle extends RestAPIVerticle {
                         if (ctx.request().getParam("password").equals(pwd)) {
                             JWTOptions opt = new JWTOptions().setExpiresInSeconds(6000L);
                             String token = jwt.generateToken(new JsonObject(), opt);
-                            ctx.response().end(new JsonObject().put("token", token).encode());
+                            ctx.response().end(token);
                         } else {
                             ctx.response().end(new JsonObject().put("message", "wrong password").encode());
                         }
@@ -76,8 +80,10 @@ public class APIGatewayVerticle extends RestAPIVerticle {
 
         router.get("/api/v").handler(this::apiVersion);
         String hostURI = String.format("https://localhost:%d", port);
-        router.route("/api/*").handler(this::dispatchRequests);
-        router.route("/*").handler(StaticHandler.create());
+        router.route("/api*/
+/*").handler(this::dispatchRequests);
+        router.route("*/
+/*").handler(StaticHandler.create());
         vertx.createHttpServer()
                 .requestHandler(router::accept)
                 .listen(port, host, ar -> {
@@ -136,13 +142,15 @@ public class APIGatewayVerticle extends RestAPIVerticle {
         });
     }
 
-    /**
+    */
+/**
      * Dispatch the request to the downstream REST layers.
      *
      * @param context routing context instance
      * @param path    relative path
      * @param client  relevant HTTP client
-     */
+     *//*
+
     private void doDispatch(RoutingContext context, String path, HttpClient client, Future<Object> cbFuture) {
         HttpClientRequest toReq = client
                 .request(context.request().method(), path, response -> {
@@ -181,11 +189,13 @@ public class APIGatewayVerticle extends RestAPIVerticle {
                 .end(new JsonObject().put("version", "v1").encodePrettily());
     }
 
-    /**
+    */
+/**
      * Get all REST endpoints from the service discovery infrastructure.
      *
      * @return async result
-     */
+     *//*
+
     private Future<List<Record>> getAllEndpoints() {
         Future<List<Record>> future = Future.future();
         discovery.getRecords(record -> record.getType().equals(HttpEndpoint.TYPE),
@@ -194,11 +204,13 @@ public class APIGatewayVerticle extends RestAPIVerticle {
     }
 
 
-    /**
+    */
+/**
      * Send heart-beat check request to every REST node in every interval and await response.
      *
      * @return async result. If all nodes are active, the result will be assigned `true`, else the result will fail
-     */
+     *//*
+
     private Future<Object> sendHeartBeatRequest() {
         final String HEARTBEAT_PATH = config().getString("heartbeat.path", "/health");
         return getAllEndpoints()
@@ -263,3 +275,4 @@ public class APIGatewayVerticle extends RestAPIVerticle {
         publishLogEvent("gateway", message);
     }
 }
+*/
