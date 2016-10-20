@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div id="login">
+  <a href="#" id="generateToken">Get a Token</a>
+  <div id="token">Current token:</div>
+</div>
+
+<br>
+<br>
+
+<div id="test">
+  <a href="#" id="getProtected">Get Protected Resource</a>
+  <div id="protected"></div>
+</div>
+<form action="/api/newToken" method="post" id="loginForm">
+  <input name="username" type="text">
+  <input name="password" type="text">
+  <input type="button" onclick="">
+</form>
+<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script language="JavaScript">
+  $(document).ready(function () {
+
+    $('#generateToken').on('click', function () {
+      $.ajax({
+        url: '/api/newToken',
+        type: "POST",
+        dataType: 'text',
+        data:$('#loginForm').serialize(),// 你的formid
+        success: function (text) {
+          $('#token').html('Current Token: ' + text);
+          window.localStorage.token=text;
+          console.log(window.localStorage.token)
+        },error: function(request) {
+          alert("Connection error");
+        }
+      });
+    });
+
+    $('#getProtected').on('click', function () {
+      $.ajax({
+        url: '/api/cmd/1',
+        dataType: 'text',
+        headers: {
+          "Authorization": "Bearer " + window.localStorage.token
+        },
+        success: function (text) {
+          $('#protected').html(text);
+        },
+        error: function (err) {
+          $('#protected').html('Error: ' + err.toString());
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
